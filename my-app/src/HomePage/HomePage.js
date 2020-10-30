@@ -6,6 +6,7 @@ import { ImageWrapper } from './HomePage.style';
 
 const API = 'https://random.dog/woof.json';
 const videoType = ['mp4']
+const imageType = ['png','jpg','jpeg','gif']
 
 class HomePage extends Component {
     constructor(props) {
@@ -14,37 +15,72 @@ class HomePage extends Component {
             dogPictures: [],
             isLoaded: false,
         }
-        this.fetchAPIData();
+        this.fetchData(API, 8);
     }
 
-    fetchAPIData = () => {
-        fetch(API)
-            .then(response =>
-                response.json()
-            )
-            .then(json => {
-                this.setState({
-                    dogPictures: json,
-                    isLoaded: true,
-                })
-                console.log("Print json files:", this.state.dogPictures);
+    async fetchData(url,size) {
+        let result = [];
+    
+        for (let i = 0; i < size; i++) {
+            let response = await fetch(url, {
+                method: 'GET'
+            });
+    
+            let data = await response.json();
+            let type = this.getFileType(data.url);
+    
+            // refetch if type is not image nor video
+            while (type === 'invalid') {
+                response = await fetch(url, {
+                    method: 'GET'
+                });
+                data = await response.json();
+                type = this.getFileType(data.url);
+            }
+    
+            result.push({
+                url: data.url, 
+                type: type
             })
+        }
+        this.setState({
+            dogPictures: result,
+            isLoaded: true,
+        })
     }
 
-    getFileTyle = (url) => {
+    // fetchAPIData = () => {
+    //     fetch(API)
+    //         .then(response =>
+    //             response.json()
+    //         )
+    //         .then(json => {
+    //             this.setState({
+    //                 dogPictures: json,
+    //                 isLoaded: true,
+    //             })
+    //             console.log("Print json files:", this.state.dogPictures);
+    //         })
+    // }
+
+    getFileType = (url) => {
         const type = url.split('.').pop();
         console.log("#######", type);
         if (videoType.includes(type)) {
             console.log("this is a video!!!!!!!!");
             return 'video';
         }
-        else {
+        else if (imageType.includes(type)) {
             return 'image';
         }
+        else {
+            return 'invalid';
+        }
+        
     }
 
     renderDifferentTypes = (url) => {
-        let type = this.getFileTyle(url);
+        let type = this.getFileType(url);
         switch (type) {
             case 'image':
                 return <img src={url} alt='img' />;
@@ -58,6 +94,8 @@ class HomePage extends Component {
         }
     }
 
+
+
     render() {
         var { isLoaded, dogPictures } = this.state;
         if (!isLoaded) {
@@ -67,7 +105,11 @@ class HomePage extends Component {
             return (
                 <div>
                     <ImageWrapper>
-                        {this.renderDifferentTypes(this.state.dogPictures.url)}
+                        <div>
+                        {dogPictures.map(item => (
+                            this.renderDifferentTypes(item.url)
+                        ))}
+                        </div>
                     </ImageWrapper>
                 </div>
             );

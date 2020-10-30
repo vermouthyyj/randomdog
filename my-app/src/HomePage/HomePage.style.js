@@ -1,8 +1,16 @@
 import styled from 'styled-components';
 
 export const ImageWrapper = styled.div`
-  >img {
-      height: 400px;
-      width: 400px;
+  >div {
+    // display: flex;
+    // justify-content: center;
+  }
+  >div>img {
+    height: 100;
+    width: 25%;
+  }
+  >div>video {
+    height: 100;
+    width: 25%;
   }
 `;
