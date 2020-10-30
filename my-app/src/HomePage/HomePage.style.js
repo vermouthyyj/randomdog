@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 
 export const Background = styled.div`
+    >h1 {
+        text-align: center;
+        font-family: Optima;
+        font-size: 40px;
+    }
     background: linear-gradient(white,white,#ffce33);
     height:120%;
 
@@ -16,7 +21,7 @@ export const PageWrapper = styled.div`
     border-color: grey;
 
     display: block;
-    margin: 5% auto 5%;
+    margin: 1% auto 5%;
 `
 
 export const ImageWrapper = styled.div`

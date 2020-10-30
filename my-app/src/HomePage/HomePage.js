@@ -100,6 +100,7 @@ class HomePage extends Component {
         else {
             return (
                 <Background>
+                    <h1>Random dogs</h1>
                     <PageWrapper>
                         <div>
                             <ImageWrapper>
