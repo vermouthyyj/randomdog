@@ -95,7 +95,8 @@ class HomePage extends Component {
     render() {
         var { isLoaded, dogPictures } = this.state;
         if (!isLoaded) {
-            return <CircleToBlockLoading></CircleToBlockLoading>;
+            // return <CircleToBlockLoading></CircleToBlockLoading>;
+            return <h1>Loading...</h1>
         }
         else {
             return (
