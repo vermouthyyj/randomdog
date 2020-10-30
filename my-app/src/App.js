@@ -5,7 +5,7 @@ import {Route , BrowserRouter as Router} from "react-router-dom";
 function App() {
   return (
     <Router>
-    <Route exact path="/" component={HomePage}></Route>
+    <Route exact path="/randomdog" component={HomePage}></Route>
     </Router>
   );
 }
