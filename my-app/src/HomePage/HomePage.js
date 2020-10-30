@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Spin } from 'antd';
-import { ImageWrapper, ButtonWrapper } from './HomePage.style';
+import { Button } from 'antd';
+import 'antd/dist/antd.css';
+import { ImageWrapper, PageWrapper, Background } from './HomePage.style';
+import { CircleToBlockLoading } from 'react-loadingg';
 
-
-
+// constant variables
 const API = 'https://random.dog/woof.json';
-const videoType = ['mp4']
-const imageType = ['png','jpg','jpeg','gif']
+const ISVIDEO = ['mp4']
+const ISIMAGE = ['png', 'jpg', 'jpeg', 'gif']
+const PHOTONUM = 8;
 
 class HomePage extends Component {
     constructor(props) {
@@ -15,56 +17,59 @@ class HomePage extends Component {
             dogPictures: [],
             isLoaded: false,
         }
-        this.fetchData(API, 8);
+        // render for the first time
+        this.fetchPhotos(API, PHOTONUM);
     }
 
-    async fetchData(url,size) {
-        let result = [];
-    
+    // fetch 8 photos asynchronously
+    async fetchPhotos(url, size) {
+        let photoList = [];
+
         for (let i = 0; i < size; i++) {
             let response = await fetch(url, {
                 method: 'GET'
             });
-    
+
             let data = await response.json();
             let type = this.getFileType(data.url);
-    
+
             // refetch if type is not image nor video
-            while (type === 'invalid') {
+            while (type === 'ERROR') {
                 response = await fetch(url, {
                     method: 'GET'
                 });
                 data = await response.json();
                 type = this.getFileType(data.url);
             }
-    
-            result.push({
-                url: data.url, 
+
+            photoList.push({
+                url: data.url,
                 type: type
             })
         }
         this.setState({
-            dogPictures: result,
+            dogPictures: photoList,
             isLoaded: true,
         })
     }
 
+    // check if the file is a video
     getFileType = (url) => {
         const type = url.split('.').pop();
-        if (videoType.includes(type)) {
+        if (ISVIDEO.includes(type)) {
             console.log("this is a video!!!!!!!!");
             return 'video';
         }
-        else if (imageType.includes(type)) {
+        else if (ISIMAGE.includes(type)) {
             return 'image';
         }
         else {
-            return 'invalid';
+            return 'ERROR';
         }
-        
+
     }
 
-    renderDifferentTypes = (url,index) => {
+    renderDifferentTypes = (url, index) => {
         let type = this.getFileType(url);
         switch (type) {
             case 'image':
@@ -78,9 +83,11 @@ class HomePage extends Component {
                 console.log("Error type of Message", type);
         }
     }
-    
+
+    // re-render when clicking the Button
     onChange = () => {
-        window.location.reload();
+        //reload the photos here
+        this.fetchPhotos(API, PHOTONUM);
     }
 
 
@@ -88,19 +95,27 @@ class HomePage extends Component {
     render() {
         var { isLoaded, dogPictures } = this.state;
         if (!isLoaded) {
-            return <Spin></Spin>;
+            return <CircleToBlockLoading></CircleToBlockLoading>;
         }
         else {
             return (
-                <div>
-                    <ImageWrapper>
-                        {dogPictures.map((item,index) => (
-                            this.renderDifferentTypes(item.url,index)
-                        ))}
-                    </ImageWrapper>
-                    <ButtonWrapper onClick={this.onChange}>Change Them!
-                    </ButtonWrapper>
-                </div>
+                <Background>
+                    <PageWrapper>
+                        <div>
+                            <ImageWrapper>
+                                {dogPictures.map((item, index) => (
+                                    this.renderDifferentTypes(item.url, index)
+                                ))}
+                            </ImageWrapper>
+                            <Button size={"large"}
+                                style={{ width: "50%", heigth: "200%", display: "block", margin: "3% auto" }}
+                                type="primary"
+                                onClick={this.onChange}>
+                                Get changed!
+                            </Button>
+                        </div>
+                    </PageWrapper>
+                </Background>
             );
         }
     }

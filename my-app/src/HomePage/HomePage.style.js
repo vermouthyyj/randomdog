@@ -1,5 +1,24 @@
 import styled from 'styled-components';
 
+export const Background = styled.div`
+    background: linear-gradient(white,white,#ffce33);
+    height:120%;
+
+    border: solid 2px;
+    border-color: grey;
+`
+
+export const PageWrapper = styled.div` 
+    background: linear-gradient(white,white,#ffce33);
+    width: 80%;
+    height: 80%;
+    border: solid 5px;
+    border-color: grey;
+
+    display: block;
+    margin: 5% auto 5%;
+`
+
 export const ImageWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -8,27 +27,16 @@ export const ImageWrapper = styled.div`
             width:100%;
         }
         display: inline-block;
-        height: 500px;
+        height: 400px;
         width: 25%;
     }
     >video {
         @media (max-width:500px) {
             width:100%;
         }
-        display: inline-block;
-        height: 500px;
+        background-size: cover;
+        // display: inline-block;
+        height: 400px;
         width: 25%;
     }
-`;
-
-export const ButtonWrapper = styled.div`
-    display: block;
-    width: 30%;
-    height: 50px;
-    line-height: 50px;
-    border: solid;
-    border-radius: 5px;
-    position: relative;
-    margin: 5% auto;
-    text-align:center;
 `;
