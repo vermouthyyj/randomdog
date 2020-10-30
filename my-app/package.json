@@ -1,9 +1,9 @@
 {
-    "homepage": "https://vermouthyyj.github.io/randomdog/",
-    "name": "my-app",
-    "version": "0.1.0",
-    "private": false,
-    "dependencies": {
+  "homepage": "https://vermouthyyj.github.io/randomdog/",
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": false,
+  "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
