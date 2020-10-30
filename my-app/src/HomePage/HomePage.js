@@ -1,6 +1,6 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { Spin } from 'antd';
-import { ImageWrapper } from './HomePage.style';
+import { ImageWrapper, ButtonWrapper } from './HomePage.style';
 
 
 
@@ -49,23 +49,8 @@ class HomePage extends Component {
         })
     }
 
-    // fetchAPIData = () => {
-    //     fetch(API)
-    //         .then(response =>
-    //             response.json()
-    //         )
-    //         .then(json => {
-    //             this.setState({
-    //                 dogPictures: json,
-    //                 isLoaded: true,
-    //             })
-    //             console.log("Print json files:", this.state.dogPictures);
-    //         })
-    // }
-
     getFileType = (url) => {
         const type = url.split('.').pop();
-        console.log("#######", type);
         if (videoType.includes(type)) {
             console.log("this is a video!!!!!!!!");
             return 'video';
@@ -79,19 +64,23 @@ class HomePage extends Component {
         
     }
 
-    renderDifferentTypes = (url) => {
+    renderDifferentTypes = (url,index) => {
         let type = this.getFileType(url);
         switch (type) {
             case 'image':
-                return <img src={url} alt='img' />;
+                return <img src={url} key={index} alt='img' />;
             case 'video':
-                return <video controls>
+                return <video key={index} controls>
                     <source src={url} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
             default:
                 console.log("Error type of Message", type);
         }
+    }
+    
+    onChange = () => {
+        window.location.reload();
     }
 
 
@@ -105,12 +94,12 @@ class HomePage extends Component {
             return (
                 <div>
                     <ImageWrapper>
-                        <div>
-                        {dogPictures.map(item => (
-                            this.renderDifferentTypes(item.url)
+                        {dogPictures.map((item,index) => (
+                            this.renderDifferentTypes(item.url,index)
                         ))}
-                        </div>
                     </ImageWrapper>
+                    <ButtonWrapper onClick={this.onChange}>Change Them!
+                    </ButtonWrapper>
                 </div>
             );
         }
